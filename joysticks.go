@@ -71,7 +71,6 @@ func (b when) Moment() time.Duration {
 	return b.Time
 }
 
-
 // button changed
 type ButtonEvent struct {
 	when
@@ -156,22 +155,22 @@ func (d HID) ParcelOutEvents() {
 					c <- AxisEvent{when{toDuration(evt.Time)}, v}
 				}
 				if c, ok := d.Events[eventSignature{hatVelocityY, h.number}]; ok {
-					c <- AxisEvent{when{toDuration(evt.Time)}, (v-d.HatAxes[evt.Index].value)/float32((toDuration(evt.Time)-d.HatAxes[evt.Index].time).Seconds())}
+					c <- AxisEvent{when{toDuration(evt.Time)}, (v - d.HatAxes[evt.Index].value) / float32((toDuration(evt.Time) - d.HatAxes[evt.Index].time).Seconds())}
 				}
 			case 2:
 				if c, ok := d.Events[eventSignature{hatPanX, h.number}]; ok {
 					c <- AxisEvent{when{toDuration(evt.Time)}, v}
 				}
 				if c, ok := d.Events[eventSignature{hatVelocityX, h.number}]; ok {
-					c <- AxisEvent{when{toDuration(evt.Time)}, (v-d.HatAxes[evt.Index].value)/float32((toDuration(evt.Time)-d.HatAxes[evt.Index].time).Seconds())}
+					c <- AxisEvent{when{toDuration(evt.Time)}, (v - d.HatAxes[evt.Index].value) / float32((toDuration(evt.Time) - d.HatAxes[evt.Index].time).Seconds())}
 				}
 			}
 			if c, ok := d.Events[eventSignature{hatPosition, h.number}]; ok {
 				switch h.axis {
 				case 1:
-					c <- CoordsEvent{when{toDuration(evt.Time)},  v ,d.HatAxes[evt.Index+1].value}
+					c <- CoordsEvent{when{toDuration(evt.Time)}, v, d.HatAxes[evt.Index+1].value}
 				case 2:
-					c <- CoordsEvent{when{toDuration(evt.Time)},  d.HatAxes[evt.Index-1].value,v}
+					c <- CoordsEvent{when{toDuration(evt.Time)}, d.HatAxes[evt.Index-1].value, v}
 				}
 			}
 			if c, ok := d.Events[eventSignature{hatAngle, h.number}]; ok {
@@ -247,7 +246,6 @@ func Capture(registrees ...Channel) []chan Event {
 	}
 	return chans
 }
-
 
 // button changes event channel.
 func (d HID) OnButton(index uint8) chan Event {
@@ -356,7 +354,6 @@ func (d HID) OnEdge(index uint8) chan Event {
 //	return c
 //}
 
-
 // see if Button exists.
 func (d HID) ButtonExists(index uint8) (ok bool) {
 	for _, v := range d.Buttons {
@@ -397,5 +394,3 @@ func (d HID) HatCoords(index uint8, coords []float32) {
 func (d HID) InsertSyntheticEvent(v int16, t uint8, i uint8) {
 	d.OSEvents <- osEventRecord{Value: v, Type: t, Index: i}
 }
-
-
